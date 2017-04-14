@@ -1,10 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.mobile.mpasswordkeeper.activity.LandingActivity">
-     <include layout="@layout/toolbar"/>
+    android:orientation="vertical"
+    tools:context="com.mobile.mpasswordkeeper.activity.LandingActivity"
+    >
+     <include layout="@layout/toolbar"
+         android:id="@+id/toolbar"/>
 
-</android.support.constraint.ConstraintLayout>
+    <Button
+        android:id="@+id/bank"
+        style="@android:style/Widget.Material.Button.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/bank"
+        android:onClick="goToBank"
+        tools:layout_editor_absoluteX="59dp"
+        tools:layout_editor_absoluteY="16dp" />
+
+    <Button
+        android:id="@+id/email"
+        style="@android:style/Widget.Material.Button.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/email"
+        android:onClick="goToEmail"
+        tools:layout_editor_absoluteX="59dp"
+        tools:layout_editor_absoluteY="90dp" />
+
+</LinearLayout>

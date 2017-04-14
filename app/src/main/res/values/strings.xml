@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">mPasswordKeeper</string>
+    <string name="bank">Bank</string>
+    <string name="email">Email</string>
 </resources>

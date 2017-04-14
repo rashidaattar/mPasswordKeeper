@@ -11,8 +11,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.mobile.mpasswordkeeper.R;
-
 import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -50,7 +48,7 @@ public class FingerPrintActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_finger_print);
+      //  setContentView(R.layout.activity_finger_print);
         mKeyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
      //   Button purchaseButton = (Button) findViewById(R.id.purchase_button);
         if (!mKeyguardManager.isKeyguardSecure()) {
@@ -160,6 +158,8 @@ public class FingerPrintActivity extends AppCompatActivity {
        /* findViewById(R.id.confirmation_message).setVisibility(View.VISIBLE);
         findViewById(R.id.purchase_button).setEnabled(false);*/
        Toast.makeText(this,"doneee",Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this,LandingActivity.class);
+        startActivity(intent);
     }
 
     private void showAlreadyAuthenticated() {
