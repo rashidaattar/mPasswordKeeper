@@ -10,14 +10,19 @@
 
     <include layout="@layout/toolbar"
         android:id="@+id/include" />
-
+<android.support.v4.widget.NestedScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@id/include">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
     <LinearLayout
         android:id="@+id/bank_details"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_below="@+id/include"
-        android:layout_alignParentStart="true"
         android:layout_marginTop="@dimen/default_margin">
 
         <android.support.design.widget.TextInputLayout
@@ -68,127 +73,6 @@
     </LinearLayout>
 
 
-
-
-    <LinearLayout
-        android:id="@+id/debit_card_details"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone"
-        android:layout_marginTop="@dimen/default_margin">
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/dc_number_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/default_margin"
-            android:layout_marginStart="@dimen/default_margin"
-            android:gravity="center">
-
-            <EditText
-                android:id="@+id/dc_number"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Username" />
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/dc_expiry_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/default_margin"
-            android:layout_marginStart="@dimen/default_margin"
-            android:gravity="center">
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Expiry Date"
-                android:inputType="date"/>
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/dc_pin_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/default_margin"
-            android:layout_marginStart="@dimen/default_margin"
-            android:gravity="center"
-            app:passwordToggleEnabled="true"
-            >
-
-            <EditText
-                android:id="@+id/dc_pin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Password"
-                android:inputType="textPassword"/>
-
-        </android.support.design.widget.TextInputLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/credit_card_details"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_below="@id/debit_card_details"
-        android:visibility="gone"
-        android:layout_marginTop="@dimen/default_margin">
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/cc_number_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/default_margin"
-            android:layout_marginStart="@dimen/default_margin"
-            android:gravity="center">
-
-            <EditText
-                android:id="@+id/cc_number"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Username" />
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/cc_expiry_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/default_margin"
-            android:layout_marginStart="@dimen/default_margin"
-            android:gravity="center">
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Expiry Date"
-                android:inputType="date"/>
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/cc_pin_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/default_margin"
-            android:layout_marginStart="@dimen/default_margin"
-            android:gravity="center"
-            app:passwordToggleEnabled="true"
-            >
-
-            <EditText
-                android:id="@+id/cc_pin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Password"
-                android:inputType="textPassword"/>
-
-        </android.support.design.widget.TextInputLayout>
-
-    </LinearLayout>
-    
     <android.support.v7.widget.ViewStubCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -213,6 +97,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_margin="@dimen/fab_margin"
+        android:layout_gravity="bottom|end"
         fab:menu_fab_size="normal"
         fab:menu_showShadow="true">
         <com.github.clans.fab.FloatingActionButton
@@ -237,6 +122,6 @@
             fab:fab_label="Net Banking" />
 
     </com.github.clans.fab.FloatingActionMenu>
-
-
+</LinearLayout>
+</android.support.v4.widget.NestedScrollView>
 </RelativeLayout>
