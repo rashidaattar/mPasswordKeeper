@@ -19,7 +19,7 @@
             android:id="@+id/cc_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Username" />
+            android:hint="CC Number" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -31,6 +31,7 @@
         android:gravity="center">
 
         <EditText
+            android:id="@+id/cc_expiry_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Expiry Date"
@@ -55,5 +56,25 @@
             android:inputType="textPassword"/>
 
     </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/cvv_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/default_margin"
+        android:layout_marginStart="@dimen/default_margin"
+        android:gravity="center"
+        app:passwordToggleEnabled="true"
+        >
+
+        <EditText
+            android:id="@+id/cvv_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="CVV"
+            android:inputType="numberPassword"/>
+
+    </android.support.design.widget.TextInputLayout>
+
 
 </LinearLayout>

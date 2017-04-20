@@ -4,36 +4,30 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 
 import com.mobile.mpasswordkeeper.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
-public class LandingActivity extends AppCompatActivity {
+public class EmailListActivity extends AppCompatActivity {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_landing);
+        setContentView(R.layout.activity_email_list);
         ButterKnife.bind(this);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle(R.string.app_name);
+        getSupportActionBar().setTitle("Email Details");
     }
 
-    public void goToBank(View view) {
-        Intent intent = new Intent(this,BankListActivity.class);
-        startActivity(intent);
-    }
-
-    public void goToEmail(View view) {
-
-        Intent intent = new Intent(this,EmailListActivity.class);
+    @OnClick(R.id.add_email)
+    public void addEmail(){
+        Intent intent = new Intent(this,AddEditEmailActivity.class);
         startActivity(intent);
     }
 }
