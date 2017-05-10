@@ -1,22 +1,43 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="#FFFFFF"
+android:id="@+id/cordinator_main"
+tools:context=".activity.BankListActivity">
+
+<include layout="@layout/toolbar"
+    android:id="@+id/toolbar"/>
+
+<android.support.v7.widget.RecyclerView
+
+    android:id="@+id/banks_list"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.mobile.mpasswordkeeper.activity.BankListActivity">
-    <include layout="@layout/toolbar"/>
+    android:clipToPadding="false"
+    android:scrollbarStyle="outsideOverlay"
+    android:paddingBottom="28dp"
+    android:layout_marginTop="?attr/actionBarSize"/>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/add_bank"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="false"
-        android:layout_margin="@dimen/fab_margin"
-        android:clickable="true"
-        app:fabSize="normal"
-        app:rippleColor="@android:color/white"
-        tools:srcCompat="@android:drawable/ic_menu_add" />
-</RelativeLayout>
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/fragment_container"
+    />
+
+<android.support.design.widget.FloatingActionButton
+    android:id="@+id/add_bank"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom|end"
+    android:layout_marginBottom="@dimen/fab_margin"
+    android:layout_marginRight="@dimen/fab_margin"
+    android:layout_marginEnd="@dimen/fab_margin"
+    android:contentDescription="Add"
+    android:elevation="@dimen/fab_elevation"
+    android:src="@drawable/ic_add_white_24dp"
+    />
+
+</android.support.design.widget.CoordinatorLayout>
