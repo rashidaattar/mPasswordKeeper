@@ -9,21 +9,20 @@ import android.database.sqlite.SQLiteDatabase;
 import com.mobile.mpasswordkeeper.database.DaoMaster;
 import com.mobile.mpasswordkeeper.database.DaoSession;
 
+import org.greenrobot.greendao.database.Database;
+
 
 public class PasswordKeeper extends Application {
 
-    private DaoMaster.DevOpenHelper helper;
-    private SQLiteDatabase db;
-    private DaoMaster daoMaster;
     private DaoSession daoSession;
+    public static final boolean ENCRYPTED = true;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        helper = new DaoMaster.DevOpenHelper(this, "notes-db", null);
-        db = helper.getWritableDatabase();
-        daoMaster = new DaoMaster(db);
-        daoSession = daoMaster.newSession();
+        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, ENCRYPTED ? "passwords-db-encrypted" : "passwords-db");
+        Database db = ENCRYPTED ? helper.getEncryptedWritableDb("super-secret") : helper.getWritableDb();
+        daoSession = new DaoMaster(db).newSession();
     }
 
     public DaoSession getDaoSession() {

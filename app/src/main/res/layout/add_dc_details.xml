@@ -19,7 +19,23 @@
             android:id="@+id/dc_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="DC Number" />
+            android:hint="DC Number"
+            android:inputType="number"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/dc_name_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/default_margin"
+        android:layout_marginStart="@dimen/default_margin"
+        android:gravity="center">
+
+        <EditText
+            android:id="@+id/dc_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="DC Name" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -53,7 +69,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Password"
-            android:inputType="textPassword"/>
+            android:inputType="numberPassword"/>
 
     </android.support.design.widget.TextInputLayout>
 
