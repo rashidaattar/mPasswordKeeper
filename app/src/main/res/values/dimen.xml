@@ -4,4 +4,32 @@
     <dimen name="fab_elevation">2dp</dimen>
 
     <dimen name="default_margin">32dp</dimen>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="textSizeMain">18sp</dimen>
+    <dimen name="textSizeMedium">15sp</dimen>
+    <dimen name="textSizeSmall">14sp</dimen>
+    <dimen name="textSizeVerySmall">12sp</dimen>
+    <dimen name="textSizeVeryVerySmall">10sp</dimen>
+    <dimen name="textSizeVeryVeryVerySmall">8sp</dimen>
+    <dimen name="textSizeButton">18sp</dimen>
+    <dimen name="textSizeSmallButton">15sp</dimen>
+    <dimen name="textSizeHeader">14sp</dimen>
+    <dimen name="textSizeActionBar">18sp</dimen>
+    <dimen name="textSizeTitle">17sp</dimen>
+
+    <!-- margins -->
+    <dimen name="marginMainLeftAndRight">10dp</dimen>
+    <dimen name="marginMainTopAndBottom">10dp</dimen>
+    <dimen name="marginSmallLeftAndRight">5dp</dimen>
+    <dimen name="marginSmallTopAndBottom">5dp</dimen>
+    <dimen name="marginExtraLargeLeftAndRight">50dp</dimen>
+    <dimen name="marginLargeLeftAndRight">15dp</dimen>
+    <dimen name="marginLargeTopAndBottom">15dp</dimen>
+
+
+    <dimen name="buttonMainHeight">48dp</dimen>
 </resources>

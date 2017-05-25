@@ -185,6 +185,9 @@ public class AddEditBankActivity extends AppCompatActivity {
         if(ifsc_no.getText().toString()!=null && ifsc_no.getText().toString().length()>0){
             bankDetails.setIfsc(ifsc_no.getText().toString());
         }
+        if(title_text.getText().toString()!=null && title_text.getText().toString().length()>0){
+            bankDetails.setTitle(title_text.getText().toString());
+        }
         if(onlineTransaction!=null){
             bankDetails.setOnlinePassword(online_pwd.getText().toString());
             bankDetails.setOnlineUsername(online_username.getText().toString());

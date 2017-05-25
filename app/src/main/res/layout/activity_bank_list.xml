@@ -21,11 +21,7 @@ tools:context=".activity.BankListActivity">
     android:paddingBottom="28dp"
     android:layout_marginTop="?attr/actionBarSize"/>
 
-<FrameLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/fragment_container"
-    />
+
 
 <android.support.design.widget.FloatingActionButton
     android:id="@+id/add_bank"
@@ -39,5 +35,11 @@ tools:context=".activity.BankListActivity">
     android:elevation="@dimen/fab_elevation"
     android:src="@drawable/ic_add_white_24dp"
     />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/fragment_container"
+        />
 
 </android.support.design.widget.CoordinatorLayout>
