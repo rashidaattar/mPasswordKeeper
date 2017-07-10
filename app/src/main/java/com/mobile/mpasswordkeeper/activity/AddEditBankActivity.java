@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.mobile.mpasswordkeeper.PasswordKeeper;
 import com.mobile.mpasswordkeeper.R;
+import com.mobile.mpasswordkeeper.Utility;
 import com.mobile.mpasswordkeeper.database.BankDetails;
 import com.mobile.mpasswordkeeper.database.BankDetailsDao;
 import com.mobile.mpasswordkeeper.database.CardDetails;
@@ -103,6 +104,10 @@ public class AddEditBankActivity extends AppCompatActivity {
     BankDetailsDao bankDetailsDao;
     CardDetailsDao cardDetailsDao;
 
+    private long bankId = -1;
+    private long ccId = -1;
+    private long dcId = -1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,15 +118,57 @@ public class AddEditBankActivity extends AppCompatActivity {
         DaoSession daoSession = ((PasswordKeeper) getApplication()).getDaoSession();
         bankDetailsDao = daoSession.getBankDetailsDao();
         cardDetailsDao = daoSession.getCardDetailsDao();
+        if(getIntent().hasExtra(Utility.BANK_ID)){
+            populateViews();
+        }
         QueryBuilder.LOG_SQL =true;
         QueryBuilder.LOG_VALUES = true;
     }
 
-    public View inflateViewtoStub(ViewStubCompat viewStubCompat, int layout){
-        viewStubCompat.setLayoutResource(layout);
-        View view = viewStubCompat.inflate();
-        viewStubCompat.setVisibility(View.VISIBLE);
-        return view;
+    private void populateViews() {
+        QueryBuilder<BankDetails> bankDetailsQueryBuilder = bankDetailsDao.queryBuilder()
+                .where(BankDetailsDao.Properties.Id.eq(getIntent().getLongExtra(Utility.BANK_ID,-1)));
+        BankDetails bankDetails = bankDetailsQueryBuilder.unique();
+        if(bankDetails.getOnlineUsername()!=null && bankDetails.getOnlineUsername().length()>0){
+
+            onlineTransaction = (LinearLayout) Utility.inflateViewtoStub(viewStubCompat1,R.layout.add_online_transaction);
+       //     showOnlineDetails(bankDetails.getOnlineUsername(),bankDetails.getOnlinePassword());
+        }
+        if(bankDetails.getCards()!=null && bankDetails.getCards().size()>0) {
+            for (CardDetails cardDetails : bankDetails.getCards()) {
+                if (viewStubCompat1.getLayoutResource() == 0) {
+                    switch (cardDetails.getCardType()) {
+                        case DEBIT:
+                            debitCard = (LinearLayout) Utility.inflateViewtoStub(viewStubCompat1, R.layout.add_dc_details);
+                            break;
+                        case CREDIT:
+                            creditcard = (LinearLayout) Utility.inflateViewtoStub(viewStubCompat1, R.layout.add_cc_details);
+                            break;
+                    }
+                } else if (viewStubCompat2.getLayoutResource() == 0) {
+                    switch (cardDetails.getCardType()) {
+                        case DEBIT:
+                            debitCard = (LinearLayout) Utility.inflateViewtoStub(viewStubCompat2, R.layout.add_dc_details);
+                            break;
+                        case CREDIT:
+                            creditcard = (LinearLayout) Utility.inflateViewtoStub(viewStubCompat2, R.layout.add_cc_details);
+                            break;
+                    }
+                } else if (viewStubCompat3.getLayoutResource() == 0) {
+                    switch (cardDetails.getCardType()) {
+                        case DEBIT:
+                            debitCard = (LinearLayout) Utility.inflateViewtoStub(viewStubCompat3, R.layout.add_dc_details);
+                            break;
+                        case CREDIT:
+                            creditcard = (LinearLayout) Utility.inflateViewtoStub(viewStubCompat3, R.layout.add_cc_details);
+                            break;
+                    }
+                }
+              //  showCCDCDetails(cardDetails);
+            }
+        }
+        initializeViews();
+        populateData(bankDetails);
     }
 
     @OnClick({R.id.debit_card_button,R.id.credit_card_button,R.id.net_banking_button})
@@ -129,39 +176,39 @@ public class AddEditBankActivity extends AppCompatActivity {
         if(viewStubCompat1.getLayoutResource()==0){
             switch (view.getId()){
                 case R.id.debit_card_button:
-                    debitCard=(LinearLayout) inflateViewtoStub(viewStubCompat1, R.layout.add_dc_details);
+                    debitCard=(LinearLayout) Utility.inflateViewtoStub(viewStubCompat1, R.layout.add_dc_details);
                     break;
                 case R.id.credit_card_button:
-                    creditcard=(LinearLayout) inflateViewtoStub(viewStubCompat1, R.layout.add_cc_details);
+                    creditcard=(LinearLayout) Utility.inflateViewtoStub(viewStubCompat1, R.layout.add_cc_details);
                     break;
                 case R.id.net_banking_button:
-                    onlineTransaction=(LinearLayout) inflateViewtoStub(viewStubCompat1, R.layout.add_online_transaction);
+                    onlineTransaction=(LinearLayout) Utility.inflateViewtoStub(viewStubCompat1, R.layout.add_online_transaction);
                     break;
             }
         }
         else if(viewStubCompat2.getLayoutResource()==0){
             switch (view.getId()){
                 case R.id.debit_card_button:
-                    debitCard=(LinearLayout) inflateViewtoStub(viewStubCompat2, R.layout.add_dc_details);
+                    debitCard=(LinearLayout) Utility.inflateViewtoStub(viewStubCompat2, R.layout.add_dc_details);
                     break;
                 case R.id.credit_card_button:
-                    creditcard=(LinearLayout) inflateViewtoStub(viewStubCompat2, R.layout.add_cc_details);
+                    creditcard=(LinearLayout) Utility.inflateViewtoStub(viewStubCompat2, R.layout.add_cc_details);
                     break;
                 case R.id.net_banking_button:
-                    onlineTransaction=(LinearLayout) inflateViewtoStub(viewStubCompat2, R.layout.add_online_transaction);
+                    onlineTransaction=(LinearLayout) Utility.inflateViewtoStub(viewStubCompat2, R.layout.add_online_transaction);
                     break;
             }
         }
         else if(viewStubCompat3.getLayoutResource()==0){
             switch (view.getId()){
                 case R.id.debit_card_button:
-                    debitCard=(LinearLayout) inflateViewtoStub(viewStubCompat3, R.layout.add_dc_details);
+                    debitCard=(LinearLayout) Utility.inflateViewtoStub(viewStubCompat3, R.layout.add_dc_details);
                     break;
                 case R.id.credit_card_button:
-                    creditcard=(LinearLayout) inflateViewtoStub(viewStubCompat3, R.layout.add_cc_details);
+                    creditcard=(LinearLayout) Utility.inflateViewtoStub(viewStubCompat3, R.layout.add_cc_details);
                     break;
                 case R.id.net_banking_button:
-                    onlineTransaction=(LinearLayout)inflateViewtoStub(viewStubCompat3, R.layout.add_online_transaction);
+                    onlineTransaction=(LinearLayout)Utility.inflateViewtoStub(viewStubCompat3, R.layout.add_online_transaction);
                     break;
             }
         }
@@ -175,6 +222,40 @@ public class AddEditBankActivity extends AppCompatActivity {
             insertUpdateData();
         }
 
+    }
+    private void populateData(BankDetails bankDetails) {
+        account_number.setText(bankDetails.getAccountNo());
+        branch_name.setText(bankDetails.getBankBranch());
+        title_text.setText(bankDetails.getTitle());
+        ifsc_no.setText(bankDetails.getIfsc());
+        bank_name.setText(bankDetails.getBankName());
+        bankId = bankDetails.getId();
+        if(onlineTransaction!=null){
+            online_username.setText(bankDetails.getOnlineUsername());
+            online_pwd.setText(bankDetails.getOnlinePassword());
+        }
+        for(CardDetails cardDetails : bankDetails.getCards()){
+            if(cardDetails.getCardType().equals(CardDetails.CardType.CREDIT)){
+                if(creditcard!=null){
+                    cc_name.setText(cardDetails.getCardName());
+                    cc_number_text.setText(String.valueOf(cardDetails.getCardNumber()));
+                    cc_cvv.setText(String.valueOf(cardDetails.getCVV()));
+                    cc_pin.setText(String.valueOf(cardDetails.getCardPin()));
+                    cc_expiry_date.setText(new SimpleDateFormat("MM/yy").format(cardDetails.getExpiryDate()));
+                    ccId = cardDetails.getId();
+                }
+            }
+            if(cardDetails.getCardType().equals(CardDetails.CardType.DEBIT)){
+                if(debitCard!=null){
+                    dc_name.setText(cardDetails.getCardName());
+                    dc_number_text.setText(String.valueOf(cardDetails.getCardNumber()));
+                    dc_cvv.setText(String.valueOf(cardDetails.getCVV()));
+                    dc_pin.setText(String.valueOf(cardDetails.getCardPin()));
+                    dc_expiry_date.setText(new SimpleDateFormat("MM/yy").format(cardDetails.getExpiryDate()));
+                    dcId = cardDetails.getId();
+                }
+            }
+        }
     }
 
     private void insertUpdateData() {
@@ -192,7 +273,13 @@ public class AddEditBankActivity extends AppCompatActivity {
             bankDetails.setOnlinePassword(online_pwd.getText().toString());
             bankDetails.setOnlineUsername(online_username.getText().toString());
         }
-        long bankId = bankDetailsDao.insert(bankDetails);
+        if(bankId!=-1){
+            bankDetails.setId(bankId);
+            bankDetailsDao.update(bankDetails);
+        }
+        else{
+            bankId = bankDetailsDao.insert(bankDetails);
+        }
         Log.d("addbank","added bank details :"+bankId);
         Toast.makeText(this,"added bank  details :"+bankId,Toast.LENGTH_SHORT).show();
 
@@ -210,7 +297,13 @@ public class AddEditBankActivity extends AppCompatActivity {
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                long ccId = cardDetailsDao.insert(cardDetails);
+                if(ccId!=-1){
+                    cardDetails.setId(ccId);
+                    cardDetailsDao.update(cardDetails);
+                }
+                else{
+                    ccId = cardDetailsDao.insert(cardDetails);
+                }
                 Log.d("addbank","added credit  details :"+ccId);
                 Toast.makeText(this,"added credit  details :"+ccId,Toast.LENGTH_SHORT).show();
             }
@@ -227,7 +320,13 @@ public class AddEditBankActivity extends AppCompatActivity {
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                long dcId = cardDetailsDao.insert(cardDetails);
+                if(dcId!=-1){
+                    cardDetails.setId(dcId);
+                    cardDetailsDao.update(cardDetails);
+                }
+                else{
+                    dcId = cardDetailsDao.insert(cardDetails);
+                }
                 Log.d("addbank","added debit details :"+dcId);
                 Toast.makeText(this,"added debit  details :"+dcId,Toast.LENGTH_SHORT).show();
             }

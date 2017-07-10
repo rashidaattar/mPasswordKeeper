@@ -2,13 +2,70 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@android:color/white"
+    android:orientation="vertical"
     tools:context="com.mobile.mpasswordkeeper.fragment.BankDetailFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/marginExtraLargeLeftAndRight"
+        android:layout_below="@id/toolbar"
+        android:layout_margin="@dimen/marginLargeLeftAndRight"
+        app:cardBackgroundColor="@color/bgColor"
+        android:id="@+id/bank_card"
+        >
+        <include layout="@layout/toolbar"
+            android:id="@+id/toolbar_bank"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginStart="@dimen/marginLargeLeftAndRight"
+            android:layout_marginLeft="@dimen/marginLargeLeftAndRight">
+            <!--since its the topmost view-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/account_no"
+                style="@style/TextMain"
+                android:layout_marginTop="?attr/actionBarSize"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/bank_name"
+                style="@style/TextMain"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/brach_name"
+                style="@style/TextMain"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/ifsc_name"
+                style="@style/TextMain"/>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.ViewStubCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/stub1"
+        android:inflatedId="@+id/test1"/>
+
+    <android.support.v7.widget.ViewStubCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/stub2"
+        android:inflatedId="@+id/test2"/>
+
+    <android.support.v7.widget.ViewStubCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/stub3"
+        android:inflatedId="@+id/test3"/>
+
 
 </LinearLayout>

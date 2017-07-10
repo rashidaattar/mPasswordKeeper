@@ -145,9 +145,10 @@ public class FingerPrintActivity extends AppCompatActivity {
         if (requestCode == REQUEST_CODE_CONFIRM_DEVICE_CREDENTIALS) {
             // Challenge completed, proceed with using cipher
             if (resultCode == RESULT_OK) {
-                if (tryEncrypt()) {
+                /*if (tryEncrypt()) {
                     showPurchaseConfirmation();
-                }
+                }*/
+                showPurchaseConfirmation();
             } else {
                 finish();
             }

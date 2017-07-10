@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 
 import com.mobile.mpasswordkeeper.PasswordKeeper;
@@ -79,7 +80,7 @@ public class BankListActivity extends AppCompatActivity implements BankDetailFra
         getBanksList();
         bankListAdapter = new BankListAdapter(banksList,this);
         bankListView.setAdapter(bankListAdapter);
-        bankListView.setLayoutManager(new GridLayoutManager(this,2));
+        bankListView.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
         bankListAdapter.notifyDataSetChanged();
     }
 
