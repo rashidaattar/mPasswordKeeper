@@ -10,6 +10,8 @@ import android.view.View;
 public class Utility {
 
     public static final String BANK_ID = "bankId";
+    public static final String OTHER_ID = "otherId";
+    public static String EMAIL_ID = "emailId";
 
     public static View inflateViewtoStub(ViewStubCompat viewStubCompat, int layout){
         viewStubCompat.setLayoutResource(layout);

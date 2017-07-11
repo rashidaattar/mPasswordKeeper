@@ -331,6 +331,7 @@ public class AddEditBankActivity extends AppCompatActivity {
                 Toast.makeText(this,"added debit  details :"+dcId,Toast.LENGTH_SHORT).show();
             }
         }
+        finish();
     }
 
     private boolean validateData() {

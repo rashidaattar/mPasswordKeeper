@@ -4,7 +4,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.mobile.mpasswordkeeper.activity.BankListActivity">
-    <include layout="@layout/toolbar"/>
+
+
+    <include layout="@layout/toolbar"
+        android:id="@+id/toolbar"/>
+
+    <android.support.v7.widget.RecyclerView
+
+        android:id="@+id/emails_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:scrollbarStyle="outsideOverlay"
+        android:paddingBottom="28dp"
+        android:layout_marginTop="?attr/actionBarSize"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/add_email"
@@ -17,5 +30,5 @@
         android:clickable="true"
         app:fabSize="normal"
         app:rippleColor="@android:color/white"
-        tools:srcCompat="@android:drawable/ic_menu_add" />
+        android:src="@drawable/ic_add_white_24dp" />
 </RelativeLayout>

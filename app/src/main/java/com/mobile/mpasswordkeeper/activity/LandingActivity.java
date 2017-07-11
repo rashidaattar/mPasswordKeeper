@@ -36,4 +36,10 @@ public class LandingActivity extends AppCompatActivity {
         Intent intent = new Intent(this,EmailListActivity.class);
         startActivity(intent);
     }
+
+    public void goToOther(View view) {
+
+        Intent intent = new Intent(this,OtherListActivity.class);
+        startActivity(intent);
+    }
 }

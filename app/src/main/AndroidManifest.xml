@@ -20,10 +20,13 @@
         </activity>
         <activity android:name=".activity.LandingActivity" />
         <activity android:name=".activity.BankListActivity" />
-        <activity android:name=".activity.AddEditBankActivity"
-            android:windowSoftInputMode="adjustPan"/>
+        <activity
+            android:name=".activity.AddEditBankActivity"
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".activity.EmailListActivity" />
-        <activity android:name=".activity.AddEditEmailActivity"></activity>
+        <activity android:name=".activity.AddEditEmailActivity" />
+        <activity android:name=".activity.OtherListActivity" />
+        <activity android:name=".activity.AddEditOtherActivity"></activity>
     </application>
 
 </manifest>

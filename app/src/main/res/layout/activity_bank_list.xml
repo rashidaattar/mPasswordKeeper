@@ -23,6 +23,7 @@ tools:context=".activity.BankListActivity">
 
 
 
+
 <android.support.design.widget.FloatingActionButton
     android:id="@+id/add_bank"
     android:layout_width="wrap_content"
