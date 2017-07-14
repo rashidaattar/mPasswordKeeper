@@ -3,6 +3,7 @@
     package="com.mobile.mpasswordkeeper">
 
     <uses-permission android:name="android.permission.USE_FINGERPRINT" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name=".PasswordKeeper"
@@ -26,7 +27,8 @@
         <activity android:name=".activity.EmailListActivity" />
         <activity android:name=".activity.AddEditEmailActivity" />
         <activity android:name=".activity.OtherListActivity" />
-        <activity android:name=".activity.AddEditOtherActivity"></activity>
+        <activity android:name=".activity.AddEditOtherActivity" />
+        <activity android:name=".activity.AddFromFileActivity"></activity>
     </application>
 
 </manifest>
