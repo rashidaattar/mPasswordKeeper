@@ -10,9 +10,20 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
 
+import com.mobile.mpasswordkeeper.PasswordKeeper;
 import com.mobile.mpasswordkeeper.R;
+import com.mobile.mpasswordkeeper.Utility;
+import com.mobile.mpasswordkeeper.database.BankDetails;
+import com.mobile.mpasswordkeeper.database.BankDetailsDao;
+import com.mobile.mpasswordkeeper.database.CardDetails;
+import com.mobile.mpasswordkeeper.database.CardDetailsDao;
+import com.mobile.mpasswordkeeper.database.EmailDetailsDao;
+import com.mobile.mpasswordkeeper.database.OtherDetailsDao;
 
+import org.apache.poi.hpsf.Util;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
@@ -24,30 +35,58 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class AddFromFileActivity extends AppCompatActivity {
 
-    public static final int REQUEST_STOREAGE_READ = 1;
+    public static final int READ_FOR_BANK = 2;
+    public static final int READ_FOR_EMAIL = 3;
+    public static final int READ_FOR_OTHER = 4;
+    private BankDetailsDao bankDetailsDao;
+    private CardDetailsDao cardDetailsDao;
+    private EmailDetailsDao emailDetailsDao;
+    private OtherDetailsDao otherDetailsDao;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_from_file);
         ButterKnife.bind(this);
+        bankDetailsDao = ((PasswordKeeper) getApplication()).getDaoSession().getBankDetailsDao();
+        cardDetailsDao = ((PasswordKeeper) getApplication()).getDaoSession().getCardDetailsDao();
+        emailDetailsDao = ((PasswordKeeper) getApplication()).getDaoSession().getEmailDetailsDao();
+        otherDetailsDao = ((PasswordKeeper) getApplication()).getDaoSession().getOtherDetailsDao();
     }
-    @OnClick(R.id.addBank)
-    public void addFromExcel(){
+
+    public void addFromExcel(View view){
         if((ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_EXTERNAL_STORAGE))== PackageManager.PERMISSION_GRANTED){
-            performFileSearch();
+            performFileSearch(view.getId());
         }
         else{
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                    REQUEST_STOREAGE_READ);
+            switch(view.getId()){
+                case R.id.addBank:
+                    ActivityCompat.requestPermissions(this,
+                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                            READ_FOR_BANK);
+                    break;
+                case R.id.addEmail:
+                    ActivityCompat.requestPermissions(this,
+                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                            READ_FOR_EMAIL);
+                    break;
+                case R.id.addOther:
+                    ActivityCompat.requestPermissions(this,
+                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                            READ_FOR_OTHER);
+                    break;
+            }
+
 
         }
     }
@@ -56,22 +95,19 @@ public class AddFromFileActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode){
-            case REQUEST_STOREAGE_READ :
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                    performFileSearch();
-                }
-                else {
-                    finish();
-                }
+        if (grantResults.length > 0
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            performFileSearch(requestCode);
+        } else {
+            finish();
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK && requestCode == 1){
+        if(resultCode == RESULT_OK && (requestCode == READ_FOR_BANK
+                || requestCode == READ_FOR_OTHER || requestCode == READ_FOR_EMAIL)){
             Uri uri = null;
             if (data != null) {
                 uri = data.getData();
@@ -81,7 +117,17 @@ public class AddFromFileActivity extends AppCompatActivity {
                     System.setProperty("org.apache.poi.javax.xml.stream.XMLInputFactory", "com.fasterxml.aalto.stax.InputFactoryImpl");
                     System.setProperty("org.apache.poi.javax.xml.stream.XMLOutputFactory", "com.fasterxml.aalto.stax.OutputFactoryImpl");
                     System.setProperty("org.apache.poi.javax.xml.stream.XMLEventFactory", "com.fasterxml.aalto.stax.EventFactoryImpl");
-                    readFile(file);
+                    switch(requestCode){
+                        case READ_FOR_BANK:
+                            Utility.readFileforBank(file,bankDetailsDao,cardDetailsDao,this);
+                            break;
+                        case READ_FOR_EMAIL :
+                            Utility.readFileforEmail(file,emailDetailsDao,this);
+                            break;
+                        case READ_FOR_OTHER :
+                            Utility.readExcelforOther(file,otherDetailsDao,this);
+                            break;
+                    }
                 }
                 else{
                     Log.d("here","hard luck. try harder" + uri.getPath());
@@ -90,7 +136,7 @@ public class AddFromFileActivity extends AppCompatActivity {
         }
     }
 
-    public void performFileSearch() {
+    public void performFileSearch(int id) {
 
 
         // ACTION_OPEN_DOCUMENT is the intent to choose a file via the system's file
@@ -107,43 +153,20 @@ public class AddFromFileActivity extends AppCompatActivity {
         // it would be "*/*".
         intent.setType("application/vnd.ms-excel"); //MIME for Excel
         intent.setType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-
-        startActivityForResult(intent, 1);
-    }
-
-    public void readFile(File file){
-        try {
-
-            FileInputStream excelFile = new FileInputStream(file);
-            Workbook workbook = new XSSFWorkbook(excelFile);
-            Sheet datatypeSheet = workbook.getSheetAt(0);
-            Iterator<Row> iterator = datatypeSheet.iterator();
-
-            while (iterator.hasNext()) {
-
-                Row currentRow = iterator.next();
-                Iterator<Cell> cellIterator = currentRow.iterator();
-
-                while (cellIterator.hasNext()) {
-
-                    Cell currentCell = cellIterator.next();
-                    //getCellTypeEnum shown as deprecated for version 3.15
-                    //getCellTypeEnum ill be renamed to getCellType starting from version 4.0
-                    if (currentCell.getCellTypeEnum() == CellType.STRING) {
-                        System.out.print(currentCell.getStringCellValue() + "--");
-                    } else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
-                        System.out.print(currentCell.getNumericCellValue() + "--");
-                    }
-
-                }
-                System.out.println();
-
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        switch(id){
+            case R.id.addBank :
+                startActivityForResult(intent, READ_FOR_BANK);
+                break;
+            case R.id.addEmail:
+                startActivityForResult(intent, READ_FOR_EMAIL);
+                break;
+            case R.id.addOther:
+                startActivityForResult(intent, READ_FOR_OTHER);
+                break;
         }
 
+
     }
+
+
 }
