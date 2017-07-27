@@ -40,4 +40,9 @@
         tools:layout_editor_absoluteX="59dp"
         tools:layout_editor_absoluteY="16dp" />
 
+    <android.support.v7.widget.AppCompatSpinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
 </LinearLayout>

@@ -16,8 +16,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/bank"
+        android:drawableTop="@drawable/ic_account_balance_white_48dp"
         android:onClick="goToBank"
+        android:text="@string/bank"
         tools:layout_editor_absoluteX="59dp"
         tools:layout_editor_absoluteY="16dp" />
 
@@ -27,8 +28,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/email"
+        android:drawableTop="@drawable/ic_email_white_48dp"
         android:onClick="goToEmail"
+        android:text="@string/email"
         tools:layout_editor_absoluteX="59dp"
         tools:layout_editor_absoluteY="90dp" />
 
@@ -41,7 +43,8 @@
         android:text="OTHER"
         android:onClick="goToOther"
         tools:layout_editor_absoluteX="59dp"
-        tools:layout_editor_absoluteY="16dp" />
+        tools:layout_editor_absoluteY="16dp"
+        android:drawableTop="@drawable/ic_account_balance_wallet_white_48dp"/>
 
     <Button
         android:id="@+id/importFile"
@@ -52,6 +55,7 @@
         android:text="IMPORT"
         android:onClick="goToImport"
         tools:layout_editor_absoluteX="59dp"
-        tools:layout_editor_absoluteY="16dp" />
+        tools:layout_editor_absoluteY="16dp"
+        android:drawableTop="@drawable/ic_input_white_48dp"/>
 
 </LinearLayout>

@@ -139,27 +139,35 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         fab:menu_fab_size="normal"
-        fab:menu_showShadow="true">
+        fab:menu_showShadow="true"
+        fab:menu_colorNormal="@color/colorAccent"
+        fab:menu_colorRipple="@color/icons">
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/debit_card_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             fab:fab_size="mini"
-            fab:fab_label="Debit Card" />
+            fab:fab_label="Debit Card"
+            fab:fab_colorNormal="@color/colorAccent"
+            fab:fab_colorRipple="@color/icons"/>
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/credit_card_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             fab:fab_size="mini"
-            fab:fab_label="Credit Card" />
+            fab:fab_label="Credit Card"
+            fab:fab_colorNormal="@color/colorAccent"
+            fab:fab_colorRipple="@color/icons"/>
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/net_banking_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             fab:fab_size="mini"
-            fab:fab_label="Net Banking" />
+            fab:fab_label="Net Banking"
+            fab:fab_colorNormal="@color/colorAccent"
+            fab:fab_colorRipple="@color/icons"/>
 
     </com.github.clans.fab.FloatingActionMenu>
 
