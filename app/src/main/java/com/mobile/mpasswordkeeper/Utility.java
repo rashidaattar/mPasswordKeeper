@@ -1,6 +1,7 @@
 package com.mobile.mpasswordkeeper;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.v7.widget.ViewStubCompat;
 import android.util.Log;
 import android.view.View;
@@ -25,6 +26,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Iterator;
@@ -46,10 +48,10 @@ public class Utility {
         return view;
     }
 
-    public static void readFileforBank(File file, BankDetailsDao bankDetailsDao, CardDetailsDao cardDetailsDao, Context context) {
+    public static void readFileforBank(Uri uri, BankDetailsDao bankDetailsDao,
+                                       CardDetailsDao cardDetailsDao, Context context) {
         try {
-
-            FileInputStream excelFile = new FileInputStream(file);
+            InputStream excelFile = context.getContentResolver().openInputStream(uri);
             Workbook workbook = new XSSFWorkbook(excelFile);
             Sheet sheet = workbook.getSheetAt(0);
             Iterator<Row> iterator = sheet.iterator();
@@ -90,7 +92,7 @@ public class Utility {
                 else
                     error += "No Bank Name for Line" + currentRow.getRowNum() + "\n";
                 if (currentRow.getCell(2).getNumericCellValue() != 0)
-                    bankDetails.setAccountNo(String.valueOf(currentRow.getCell(2).getNumericCellValue()));
+                    bankDetails.setAccountNo(String.valueOf((int)currentRow.getCell(2).getNumericCellValue()));
                 else
                     error += "No Bank Account Number for Line" + currentRow.getRowNum() + "\n";
                 if (currentRow.getCell(3).getStringCellValue() != null)
@@ -112,8 +114,8 @@ public class Utility {
                 }
                 if (currentRow.getCell(6).getStringCellValue().equalsIgnoreCase("Y")) {
                     isCredit = true;
-                    if (currentRow.getCell(10).getNumericCellValue() != 0)
-                        creditCardDetails.setCardNumber((long) currentRow.getCell(10).getNumericCellValue());
+                    if (currentRow.getCell(10).getStringCellValue() != null)
+                        creditCardDetails.setCardNumber(Long.valueOf( currentRow.getCell(10).getStringCellValue()));
                     else
                         error += "No Credit Card number for Line" + currentRow.getRowNum() + "\n";
                     if (currentRow.getCell(11).getStringCellValue() != null)
@@ -121,16 +123,16 @@ public class Utility {
                                 .getStringCellValue()));
                     else
                         error += "No Credit Card expiry date for Line" + currentRow.getRowNum() + "\n";
-                    if (currentRow.getCell(12).getNumericCellValue() != 0)
-                        creditCardDetails.setCVV((int) currentRow.getCell(12).getNumericCellValue());
+                    if (currentRow.getCell(12).getStringCellValue() != null)
+                        creditCardDetails.setCVV(Integer.parseInt(currentRow.getCell(12).getStringCellValue()));
                     else
                         error += "No Credit Card CVV for Line" + currentRow.getRowNum() + "\n";
                     if (currentRow.getCell(13).getStringCellValue() != null)
                         creditCardDetails.setCardName(currentRow.getCell(13).getStringCellValue());
                     else
                         error += "No Credit Card number for Line" + currentRow.getRowNum() + "\n";
-                    if (currentRow.getCell(14).getNumericCellValue() != 0)
-                        creditCardDetails.setCardPin((int) currentRow.getCell(14).getNumericCellValue());
+                    if (currentRow.getCell(14).getStringCellValue() != null)
+                        creditCardDetails.setCardPin(Integer.parseInt(currentRow.getCell(14).getStringCellValue()));
                     else
                         error += "No Credit Card pin for Line" + currentRow.getRowNum() + "\n";
                     creditCardDetails.setCardType(CardDetails.CardType.CREDIT);
@@ -138,8 +140,8 @@ public class Utility {
                 }
                 if (currentRow.getCell(7).getStringCellValue().equalsIgnoreCase("Y")) {
                     isDebit = true;
-                    if (currentRow.getCell(15).getNumericCellValue() != 0)
-                        debitCardDetails.setCardNumber((long) currentRow.getCell(15).getNumericCellValue());
+                    if (currentRow.getCell(15).getStringCellValue() != null)
+                        debitCardDetails.setCardNumber(Long.valueOf(currentRow.getCell(15).getStringCellValue()));
                     else
                         error += "No Debit Card number for Line" + currentRow.getRowNum() + "\n";
                     if (currentRow.getCell(16).getStringCellValue() != null)
@@ -151,16 +153,16 @@ public class Utility {
                         }
                     else
                         error += "No Debit Card expiry date for Line" + currentRow.getRowNum() + "\n";
-                    if (currentRow.getCell(17).getNumericCellValue() != 0)
-                        debitCardDetails.setCVV((int) currentRow.getCell(17).getNumericCellValue());
+                    if (currentRow.getCell(17).getStringCellValue() != null)
+                        debitCardDetails.setCVV(Integer.parseInt(currentRow.getCell(17).getStringCellValue()));
                     else
                         error += "No Debit Card CVV for Line" + currentRow.getRowNum() + "\n";
                     if (currentRow.getCell(18).getStringCellValue() != null)
                         debitCardDetails.setCardName(currentRow.getCell(18).getStringCellValue());
                     else
                         error += "No Debit Card number for Line" + currentRow.getRowNum() + "\n";
-                    if (currentRow.getCell(19).getNumericCellValue() != 0)
-                        debitCardDetails.setCardPin((int) currentRow.getCell(19).getNumericCellValue());
+                    if (currentRow.getCell(19).getStringCellValue() != null)
+                        debitCardDetails.setCardPin(Integer.parseInt(currentRow.getCell(19).getStringCellValue()));
                     else
                         error += "No Debit Card pin for Line" + currentRow.getRowNum() + "\n";
                     debitCardDetails.setCardType(CardDetails.CardType.DEBIT);
@@ -182,6 +184,8 @@ public class Utility {
                 }
 
             }
+            if(error.length()>0)
+                Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -193,11 +197,55 @@ public class Utility {
         }
     }
 
-    public static void readFileforEmail(File file, EmailDetailsDao emailDetailsDao, Context context) {
-
-        FileInputStream excelFile = null;
+    public static void readExcelforOther(Uri uri, OtherDetailsDao otherDetailsDao,Context context){
+        InputStream excelFile = null;
         try {
-            excelFile = new FileInputStream(file);
+            excelFile = context.getContentResolver().openInputStream(uri);
+            Workbook workbook = new XSSFWorkbook(excelFile);
+            Sheet sheet = workbook.getSheetAt(0);
+            Iterator<Row> iterator = sheet.iterator();
+            String error = "";
+            if (iterator.hasNext()) {
+                Row firstRow = iterator.next();
+            }
+
+            while (iterator.hasNext()) {
+                Row currentRow = iterator.next();
+                OtherDetails otherDetail = new OtherDetails();
+                Log.d("this", String.valueOf(currentRow.getLastCellNum()));
+                if (currentRow.getCell(0).getStringCellValue() != null)
+                    otherDetail.setTitle(currentRow.getCell(0).getStringCellValue());
+                if(currentRow.getCell(1).getStringCellValue()!=null)
+                    otherDetail.setUserName(currentRow.getCell(0).getStringCellValue());
+                else
+                    error += "No Username for Line" + currentRow.getRowNum() + "\n";
+                if(currentRow.getCell(2).getStringCellValue()!=null)
+                    otherDetail.setPassword(currentRow.getCell(2).getStringCellValue());
+                else
+                    error += "No Password for Line" + currentRow.getRowNum() + "\n";
+                if(currentRow.getLastCellNum()>3)
+                if (currentRow.getCell(3).getStringCellValue() != null)
+                    otherDetail.setAdditionalInfo(currentRow.getCell(3).getStringCellValue());
+                if(!(error.length()>0)){
+                  otherDetailsDao.insert(otherDetail);
+                }
+                else{
+                    Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
+                }
+            }
+            if(error.length()>0)
+            Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public static void readFileforEmail(Uri uri, EmailDetailsDao emailDetailsDao, Context context) {
+
+        InputStream excelFile = null;
+        try {
+            excelFile = context.getContentResolver().openInputStream(uri);
             Workbook workbook = new XSSFWorkbook(excelFile);
             Sheet sheet = workbook.getSheetAt(0);
             Iterator<Row> iterator = sheet.iterator();
@@ -226,8 +274,10 @@ public class Utility {
                 else{
                     Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
                 }
-
             }
+            if(error.length()>0)
+                Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
+            excelFile.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -235,41 +285,4 @@ public class Utility {
         }
     }
 
-    public static void readExcelforOther(File file, OtherDetailsDao otherDetailsDao,Context context){
-        FileInputStream excelFile = null;
-        try {
-            excelFile = new FileInputStream(file);
-            Workbook workbook = new XSSFWorkbook(excelFile);
-            Sheet sheet = workbook.getSheetAt(0);
-            Iterator<Row> iterator = sheet.iterator();
-            String error = "";
-            if (iterator.hasNext()) {
-                Row firstRow = iterator.next();
-            }
-
-            while (iterator.hasNext()) {
-                Row currentRow = iterator.next();
-                OtherDetails otherDetail = new OtherDetails();
-                Log.d("this", String.valueOf(currentRow.getLastCellNum()));
-                if (currentRow.getCell(0).getStringCellValue() != null)
-                    otherDetail.setTitle(currentRow.getCell(0).getStringCellValue());
-                if(currentRow.getCell(1).getStringCellValue()!=null)
-                    otherDetail.setUserName(currentRow.getCell(0).getStringCellValue());
-                else
-                    error += "No Username for Line" + currentRow.getRowNum() + "\n";
-                if(currentRow.getCell(2).getStringCellValue()!=null)
-                    otherDetail.setPassword(currentRow.getCell(2).getStringCellValue());
-                else
-                    error += "No Password for Line" + currentRow.getRowNum() + "\n";
-                if(currentRow.getLastCellNum()>3)
-                if (currentRow.getCell(3).getStringCellValue() != null)
-                    otherDetail.setAdditionalInfo(currentRow.getCell(3).getStringCellValue());
-
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }

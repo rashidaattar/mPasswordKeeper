@@ -23,7 +23,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/card_type"
-                style="@style/TextMain" />
+                style="@style/TextMain"
+                android:textStyle="bold|italic"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
